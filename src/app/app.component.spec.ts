@@ -17,13 +17,13 @@ describe('AppComponent', () => {
   it(`should have the 'Direct-debit-agency' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Direct-debit-agency');
+    expect(app.title).toEqual('Direct Debit Agency');
   });
 
-  it('should render title', () => {
+  it('should render the direct debit form', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Direct-debit-agency');
+    expect(compiled.querySelector('app-direct-debit-form')).toBeTruthy();
   });
 });

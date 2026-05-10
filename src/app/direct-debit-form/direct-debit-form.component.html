@@ -1,0 +1,200 @@
+<main class="page-shell">
+  @if (isPageLoading) {
+    <div class="loading-overlay" role="status" aria-live="polite" aria-busy="true">
+      <div class="loading-card">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <p>{{ loadingMessage }}</p>
+      </div>
+    </div>
+  }
+
+  <section class="hero-card">
+    <img src="../../../assets/zpl-assets/ZPL-logo.png" alt="Direct Debit Mandate" />
+    <p class="eyebrow">Direct Debit Mandate</p>
+    <!-- <h1 class="eyebrows">Create payment request</h1> -->
+  </section> 
+
+  <form class="form-card" [formGroup]="form">
+    <section class="form-section">
+      <div class="section-heading">
+        <h2>Customer Information</h2>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          <span>Customer Email</span>
+          <input type="email" formControlName="recipient" placeholder="user@example.com" />
+        </label>
+
+        <label>
+          <span>Payment Frequency</span>
+          <select formControlName="billingCycle">
+            @for (frequency of paymentFrequencies; track frequency) {
+              <option [value]="frequency">{{ frequency }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span>Products</span>
+          <select formControlName="productId" (change)="onProductChange($event)">
+            <option value="">Select product</option>
+            @for (product of products; track product.productId) {
+              <option [value]="product.productId">
+                {{ product.productName }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span>Phone Number</span>
+          <input type="text" formControlName="phoneNumber" />
+        </label>
+
+        <label>
+          <span>Amount Limit</span>
+          <input
+            type="text"
+            formControlName="amountLimit"
+            inputmode="numeric"
+            currencyMask
+            [options]="amountLimitCurrencyOptions"
+          />  
+        </label>
+
+        <label>
+          <span>Start Date</span>
+          <input type="date" formControlName="startDate" />
+        </label>
+
+        <label>
+          <span>End Date</span>
+          <input type="date" formControlName="endDate" />
+        </label>
+
+        <label>
+          <span>Policy Number</span>
+          <input type="text" formControlName="serviceReference" />
+        </label>
+
+        <label>
+          <span>Bank</span>
+          <select formControlName="bankCode" (change)="onBankCodeChange($event)">
+            <option value="">Select bank</option>
+            @for (bank of BANKS; track bank.id) {
+              <option [value]="bank.bankCode">{{ bank.bankName }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          <span>Account Number</span>
+          <input type="text" formControlName="mandateAccountNumber" inputmode="numeric" (keyup)="checkAccountNumber($event)" />
+        </label>
+
+        <label>
+          <span>Account Name</span>
+          <div class="account-name-field">
+            <input type="text" formControlName="mandateAccountName" />
+          </div>
+        </label>
+
+        <label>
+          <span>Payer Name</span>
+          <div class="payer-name-field" [class.has-inline-action]="canUseAccountNameForPayer">
+            <input type="text" formControlName="payerName" />
+            @if (canUseAccountNameForPayer) {
+              <button type="button" class="inline-copy-button" (click)="useAccountNameForPayer()">
+                Same as account name
+              </button>
+            }
+          </div>
+        </label>
+
+        <label>
+          <span>Payer Address</span>
+          <input type="text" formControlName="payerAddress" />
+        </label>
+
+        <label>
+          <span>Description</span>
+          <input type="text" placeholder="Enter description" formControlName="description" />
+        </label>
+
+      </div>
+    </section>
+
+    <div class="actions">
+      <button style="font-weight: 800;" (click)="createMandate()" type="submit">Create Request</button>
+    </div>
+  </form>
+
+  @if (mandateResponse; as response) {
+    @if (isMandateModalOpen) {
+      <div class="modal-backdrop" role="presentation" (click)="closeMandateModal()">
+        <section
+          class="mandate-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mandate-response-title"
+          (click)="$event.stopPropagation()"
+        >
+        <div class="close-modal-header">
+          <img src="../../../assets/zpl-assets/close-icon.svg" alt="Close" class="close-icon" (click)="closeMandateModal()" />
+        </div>
+
+          <h2 id="mandate-response-title">{{ response.title }}</h2>
+          <p class="modal-message">{{ response.message }}</p>
+
+          <section class="activation-payment-card" aria-labelledby="activation-payment-title">
+            <div class="activation-payment-header">
+              <span class="activation-badge">Activation Required</span>
+              <p>
+                Dear Customer, please make a payment of
+                <strong>{{ activationPaymentAmount | currency: 'NGN' : 'symbol-narrow' : '1.0-0' }}</strong>
+                to any of these accounts to activate your mandate.
+              </p>
+            </div>
+
+            <div class="activation-account-grid">
+              @for (account of activationPaymentAccounts; track account.accountNumber) {
+                <article class="activation-account-card">
+                  <span class="activation-option">{{ account.option }}</span>
+                  <dl>
+                    <div>
+                      <dt>Account</dt>
+                      <dd>
+                        <span>{{ account.accountNumber }}</span>
+                       <img src="../../assets/zpl-assets/copy-icon.svg" alt="Copy" class="copy-icon" (click)="copyActivationValue(account.accountNumber, 'Account number')" />
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Bank</dt>
+                      <dd>
+                        <span>{{ account.bankName }}</span>
+                        <img src="../../assets/zpl-assets/copy-icon.svg" alt="Copy" class="copy-icon" (click)="copyActivationValue(account.bankName, 'Bank name')" />
+                      </dd>
+                    </div>
+                  </dl>
+                </article>
+              }
+            </div>
+          </section>
+          @if (response.setUpUrl) {
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <a
+                class="link-copy-button"
+                [href]="response.setUpUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Confirm Payment and Activate Mandate
+              </a>
+            </div>
+          }
+        </section>
+      </div>
+    }
+  }
+</main>

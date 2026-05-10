@@ -1,1 +1,332 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+  color: #f44336;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.loading-spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(244, 67, 54, 0.2);
+  border-top-color: #f44336;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(23, 32, 51, 0.48);
+  backdrop-filter: blur(2px);
+}
+
+.loading-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: min(100%, 22rem);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(23, 32, 51, 0.22);
+  color: #172033;
+  font-weight: 800;
+  padding: 1.1rem 1.25rem;
+}
+
+.loading-card p {
+  margin: 0;
+}
+
+.loading-card .loading-spinner {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: 0 0 auto;
+  border-width: 3px;
+  border-color: #f4b5b0;
+  border-top-color: #f44336;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.64);
+  backdrop-filter: blur(8px);
+}
+
+.mandate-modal {
+  position: relative;
+  width: min(100%, 36rem);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 28px;
+  background: radial-gradient(circle at top left, rgba(244, 67, 54, 0.12), transparent 36%), #fff;
+  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.28);
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #f4f6fb;
+  color: #334155;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.modal-status-icon {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff2f0;
+  color: #f44336;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 8px rgba(244, 67, 54, 0.08);
+}
+
+.modal-status-icon.is-success {
+  background: #ecfdf3;
+  color: #07803d;
+  box-shadow: inset 0 0 0 8px rgba(7, 128, 61, 0.08);
+}
+
+.modal-kicker {
+  margin-bottom: 0.4rem;
+  color: #f44336;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mandate-modal h2 {
+  margin-bottom: 0.65rem;
+  color: #111827;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.modal-message {
+  margin-bottom: 1.25rem;
+  color: #475569;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.activation-payment-card {
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(244, 67, 54, 0.16);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff8f7, #fff);
+  padding: 1rem;
+}
+
+.activation-payment-header {
+  text-align: center;
+}
+
+.activation-payment-header h3 {
+  margin: 0.45rem 0;
+  color: #172033;
+  font-size: 1.25rem;
+}
+
+.activation-payment-header p {
+  margin: 0 auto 1rem;
+  max-width: 29rem;
+  color: #475569;
+  line-height: 1.55;
+}
+
+.activation-payment-header strong {
+  color: #f44336;
+  font-weight: 900;
+}
+
+.activation-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  background: #fee2df;
+  color: #c23227;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.activation-account-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.activation-account-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+  padding: 1rem;
+  text-align: center;
+}
+
+.activation-option {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #0f172a;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.activation-account-card dl {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.activation-account-card div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.activation-account-card dt {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.activation-account-card dd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: #172033;
+  font-weight: 800;
+}
+
+.inline-copy-icon-button {
+  display: inline-grid;
+  width: 1.85rem;
+  height: 1.85rem;
+  place-items: center;
+  border: 1px solid rgba(59, 130, 246, 0.32);
+  border-radius: 50%;
+  background: #f8fbff;
+  color: #2f80b8;
+  padding: 0;
+}
+
+.inline-copy-icon-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.response-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.response-summary div,
+.mandate-link-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.88);
+  padding: 0.9rem;
+}
+
+.response-summary span,
+.mandate-link-card span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.response-summary strong {
+  color: #0f172a;
+  font-size: 1.05rem;
+}
+
+.mandate-link-card {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.mandate-link-card a {
+  overflow-wrap: anywhere;
+  color: #f44336;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.link-copy-button,
+.modal-primary-button {
+  width: 100%;
+}
+
+.link-copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(244, 67, 54, 0.25);
+  border-radius: 999px;
+  background: #fff;
+  color: #f44336;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 1rem 1.4rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .activation-account-grid,
+  .response-summary {
+    grid-template-columns: 1fr;
+  }
+}
